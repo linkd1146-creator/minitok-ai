@@ -1,29 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Upload - MiniTok</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
 <body>
 
-<h2>Admin Upload</h2>
+<h2>Admin Upload Video</h2>
 
-<input id="video" placeholder="YouTube ID">
-<input id="link" placeholder="Affiliate Link">
+<input type="text" id="video" placeholder="YouTube ID" required>
+<input type="url" id="link" placeholder="Affiliate Link" required>
 <button onclick="upload()">Upload</button>
+
+<div id="message"></div>
 
 <script type="module">
 import { db } from "./firebase.js";
-import { push, ref } 
-from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+import { push, ref } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 
-window.upload = function(){
-
-  push(ref(db,"videos"),{
-    video:document.getElementById("video").value,
-    link:document.getElementById("link").value,
-    ctr:0,
-    views:0
-  });
-
-  alert("Uploaded!");
+window.upload = async function(){
+    const videoInput = document.getElementById("video");
+    const linkInput = document.getElementById("link");
+    const messageDiv = document.getElementById("message");
+    
+    // Validasi input
+    if (!videoInput.value.trim()) {
+        showMessage("YouTube ID tidak boleh kosong!", "error");
+        return;
+    }
+    
+    if (!linkInput.value.trim()) {
+        showMessage("Affiliate Link tidak boleh kosong!", "error");
+        return;
+    }
+    
+    try {
+        await push(ref(db, "videos"), {
+            video: videoInput.value.trim(),
+            link: linkInput.value.trim(),
+            ctr: 0,
+            views: 0,
+            createdAt: new Date().toISOString()
+        });
+        
+        showMessage("✅ Video berhasil diupload!", "success");
+        
+        // Clear form
+        videoInput.value = "";
+        linkInput.value = "";
+    } catch (error) {
+        showMessage("❌ Gagal upload: " + error.message, "error");
+        console.error(error);
+    }
 };
+
+function showMessage(text, type) {
+    const messageDiv = document.getElementById("message");
+    messageDiv.textContent = text;
+    messageDiv.className = "message " + type;
+    
+    // Hilangkan pesan setelah 3 detik
+    setTimeout(() => {
+        messageDiv.textContent = "";
+        messageDiv.className = "";
+    }, 3000);
+}
 </script>
 
 </body>
