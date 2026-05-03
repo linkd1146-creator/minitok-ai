@@ -1,42 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin MiniTok</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniTok V2</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Upload Video</h2>
+<div class="topbar">MiniTok V2 🚀</div>
 
-<input id="video" placeholder="YouTube ID">
-<input id="link" placeholder="Affiliate Link">
-<button onclick="upload()">Upload</button>
+<div id="feed">Loading...</div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getDatabase, push, ref } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-window.upload = function(){
-
-  push(ref(db,"videos"),{
-    video:document.getElementById("video").value,
-    link:document.getElementById("link").value,
-    ctr:0,
-    views:0
-  });
-
-  alert("Uploaded!");
-};
-</script>
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
