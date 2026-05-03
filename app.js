@@ -1,56 +1,65 @@
-body{
-  margin:0;
-  background:black;
-  color:white;
-  font-family:Arial;
+import { db } from "./firebase.js";
+import {
+  ref,
+  onValue,
+  set,
+  get
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+
+let videos = [];
+
+/* ================= LOAD ================= */
+onValue(ref(db,"videos"), (snap)=>{
+  videos = snap.val()
+    ? Object.entries(snap.val()).map(([id,v])=>({id,...v}))
+    : [];
+
+  render();
+});
+
+/* ================= RENDER ================= */
+function render(){
+
+  const feed = document.getElementById("feed");
+  feed.innerHTML = "";
+
+  videos.forEach(v=>{
+
+    let div = document.createElement("div");
+    div.className="video";
+
+    div.innerHTML=`
+      <iframe src="https://www.youtube.com/embed/${v.video}?autoplay=1&mute=1"></iframe>
+
+      <a class="buy-btn" href="${v.link}">
+        🛒 BUY
+      </a>
+
+      <div class="like" onclick="like('${v.id}')">❤️</div>
+      <div class="share" onclick="share()">🔗</div>
+    `;
+
+    feed.appendChild(div);
+  });
 }
 
-.topbar{
-  position:fixed;
-  top:0;
-  width:100%;
-  text-align:center;
-  padding:10px;
-  background:rgba(0,0,0,0.6);
-  z-index:10;
-}
+/* ================= LIKE ================= */
+window.like = function(id){
 
-#feed{
-  height:100vh;
-  overflow-y:scroll;
-  scroll-snap-type:y mandatory;
-}
+  let r = ref(db,"videos/"+id+"/ctr");
 
-.video{
-  height:100vh;
-  position:relative;
-  scroll-snap-align:start;
-}
+  get(r).then(snap=>{
+    set(r,(snap.val()||0)+1);
+  });
 
-iframe{
-  width:100%;
-  height:100%;
-  border:none;
-}
+};
 
-.buy-btn{
-  position:absolute;
-  bottom:80px;
-  left:50%;
-  transform:translateX(-50%);
-  background:gold;
-  padding:12px 20px;
-  border-radius:30px;
-  font-weight:bold;
-  color:black;
-}
+/* ================= SHARE ================= */
+window.share = function(){
+  navigator.share?.({
+    title:"MiniTok",
+    url:location.href
+  });
+};
 
-.like, .share{
-  position:absolute;
-  right:15px;
-  font-size:24px;
-  cursor:pointer;
-}
-
-.like{ bottom:140px; }
-.share{ bottom:90px; }
+console.log("MiniTok V2 Loaded 🚀");
