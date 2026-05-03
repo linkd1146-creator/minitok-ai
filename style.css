@@ -3,35 +3,36 @@ body{
   background:black;
   color:white;
   font-family:Arial;
-  overflow:hidden;
+  overflow:hidden;  meluap:tersembunyi;
 }
 
-#feed{
-  height:100vh;
-  overflow-y:scroll;
-  scroll-snap-type:y mandatory;
+#feed{#memberi makan{
+  height:100vh;  tinggi:100vh;  :100vh;  tinggi:100vh;
+  overflow-y:scroll;  meluap-y:;
+scroll-snap-type:y ;  tipe jepret gulir:Dan wajib;tipe jepret gulir:Dan;  tipe jepret gulir:Danwajib;
+  padding-top:60px; /* Hindari tertutup topbar */  bantalan atas:60px
 }
 
-.video{
-  height:100vh;
-  position:relative;
-  scroll-snap-align:start;
+.video{video{
+  height:100vh;  tinggi:100vh;
+  position:relative;  posisi:relatif;
+  scroll-snap-align:start;  gulir-jepret-sejajar:awal
 }
 
-iframe{
-  width:100%;
+iframe{iframe
+
   height:100%;
-  border:none;
+  :none;  berbatasan:tidak ada
 }
 
 .topbar{
   position:fixed;
-  top:0;
+  top:0;  atas:0;
   width:100%;
   text-align:center;
   padding:10px;
   background:rgba(0,0,0,0.5);
-  z-index:10;
+  z-index:10;  indeks z:10;
 }
 
 .buy-btn{
@@ -42,15 +43,23 @@ iframe{
   background:gold;
   padding:12px 20px;
   border-radius:30px;
+  border:none;
   font-weight:bold;
   color:black;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+
+.buy-btn:hover{
+  background:orange;
+  transform:translateX(-50%) scale(1.05);
 }
 
 .like, .share{
   position:absolute;
-  right:20px;
   font-size:24px;
   cursor:pointer;
+  right:20px;
 }
 
 .like{ bottom:140px; }
