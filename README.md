@@ -1,4 +1,4 @@
-# 🚀 MiniTok SaaS V2
+# 🚀 MiniTok 
 
 MiniTok adalah platform video short-style (mirip TikTok) dengan fitur:
 
