@@ -29,7 +29,7 @@ function render(){
     div.className="video";
 
     div.innerHTML=`
-      <iframe src="https://www.youtube.com/embed/${v.video}?autoplay=1&mute=1"></iframe>
+      <iframe src="https://www.youtube.com/embed/${v.video}?autoplay=1"></iframe>
 
       <a class="buy-btn" href="${v.link}">
         🛒 BUY
